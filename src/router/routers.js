@@ -11,8 +11,13 @@ export var routers = [
         component: () => import('../views/about.vue')
     },
     {
-        path: '/dashboard',
+        path: '/home',
         name: 'dashboard',
         component: () => import('../views/dashboard.vue')
+    },
+    {
+        path: '/chat',
+        name: 'chat',
+        component: () => import('../views/chat.vue')
     }
 ]

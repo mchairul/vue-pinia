@@ -1,4 +1,12 @@
 <script setup>
+import { useRouter } from 'vue-router';
+
+
+const router = useRouter();
+
+const pindahHalaman = (namaHalaman) => {
+    router.push({name: namaHalaman})
+}
 
 </script>
 
@@ -8,15 +16,8 @@
         <div class="sidebar-brand">
             <!--begin::Brand Link-->
             <a href="./index.html" class="brand-link">
-                <!--begin::Brand Image-->
-                <img
-                src="./assets/img/AdminLTELogo.png"
-                alt="AdminLTE Logo"
-                class="brand-image opacity-75 shadow"
-                />
-                <!--end::Brand Image-->
                 <!--begin::Brand Text-->
-                <span class="brand-text fw-light">AdminLTE 4</span>
+                <span class="brand-text fw-light">Admin Panel</span>
                 <!--end::Brand Text-->
             </a>
             <!--end::Brand Link-->
@@ -36,11 +37,17 @@
                 id="navigation"
                 >
 
-                <li class="nav-header">EXAMPLES</li>
+                <!-- <li class="nav-header">EXAMPLES</li> -->
                 <li class="nav-item">
-                    <a href="./docs/introduction.html" class="nav-link">
-                    <i class="nav-icon bi bi-download"></i>
-                    <p>Installation</p>
+                    <a href="#" class="nav-link" @click="pindahHalaman('dashboard')">
+                    <i class="nav-icon bi bi-speedometer"></i>
+                    <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" @click="pindahHalaman('chat')">
+                    <i class="nav-icon bi bi-chat"></i>
+                    <p>Pesan</p>
                     </a>
                 </li>
             </ul>

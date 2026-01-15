@@ -3,6 +3,10 @@ import { onMounted, ref } from 'vue'
 import { Field, Form, ErrorMessage, defineRule, useResetForm, useForm } from 'vee-validate'
 import * as yup from 'yup'
 import API from '../api'
+import { useUserDataStore } from '../stores/userData'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 onMounted(() => {
     // menambahkan class ke tag body
@@ -27,7 +31,11 @@ const { resetForm } = useForm({
 const isLoading = ref(false)
 const pesanError = ref('')
 
+// inisiasi login store
+const loginStore = useUserDataStore()
+
 const prosesLogin = async (formValue) => {
+    loginStore.clearLoginUser()
     isLoading.value = true
     pesanError.value = ''
     try {
@@ -37,7 +45,27 @@ const prosesLogin = async (formValue) => {
                 'Accept': 'application/json'
             }
         }).then((response) => {
-            console.log(response);
+            let dataUser = {}
+
+            dataUser.userId = response.data.data.id
+            dataUser.name = response.data.data.name
+            dataUser.email = response.data.data.email
+            dataUser.apikey = response.data.access_token
+            dataUser.message = response.data.message
+
+            // simpan user data ke local storage
+            localStorage.setItem('dataUser', JSON.stringify(dataUser))
+
+            //alert(dataUser.message)
+
+            // simpan user data ke data store
+            loginStore.setLoginUser(dataUser)
+
+            //simpan api key ke data store
+            //loginStore.setApikeyUser(response.data.access_token)
+
+            // pindah ke halaman dashboard
+            router.push({name: 'dashboard'})
         })
     } catch (error) {
         if (error.status == 401) {

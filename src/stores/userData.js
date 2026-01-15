@@ -12,6 +12,12 @@ export const useUserDataStore = defineStore("dataUser", {
         },
         clearLoginUser(){
             this.loginData.value = null
-        }
+        },
+        // setApikeyUser(dataApikey){
+        //     this.apiData.value = dataApikey
+        // },
+        // clearApikeyUser(){
+        //     this.apiData.value = ''
+        // }
     }
 })

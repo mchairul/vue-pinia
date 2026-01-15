@@ -1,5 +1,38 @@
 <script setup>
+import { useRouter } from 'vue-router';
+import { useUserDataStore } from '../stores/userData';
+import API from '../api';
 
+const dataUser = useUserDataStore()
+const loginStore = useUserDataStore()
+
+const router = useRouter()
+
+const logout = async () => {
+    const confirmation = confirm('apakah anda yakin untuk logout?')
+    if (confirmation) {
+        await API.get('/logout',{
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + loginStore.loginData.value.apikey
+            }
+        }).then((response) => {
+            // hapus data user dari local storage
+            localStorage.removeItem('dataUser')
+
+            // hapus store user
+            loginStore.clearLoginUser()
+
+            // hapus store apikey
+            loginStore.clearApikeyUser()
+
+            router.push({name: 'login'})
+        }).catch((e) => {
+            console.log(e)
+        })
+    }
+}
 </script>
 
 <template>
@@ -10,41 +43,30 @@
                 <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                     <img
-                    src="./assets/img/user2-160x160.jpg"
+                    src="/avatar5.png"
                     class="user-image rounded-circle shadow"
                     alt="User Image"
                     />
-                    <span class="d-none d-md-inline">Alexander Pierce</span>
+                    <span class="d-none d-md-inline" v-if="dataUser.loginData.value != null">{{ dataUser.loginData.value.name }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                     <!--begin::User Image-->
                     <li class="user-header text-bg-primary">
                     <img
-                        src="./assets/img/user2-160x160.jpg"
+                        src="/avatar5.png"
                         class="rounded-circle shadow"
                         alt="User Image"
                     />
-                    <p>
-                        Alexander Pierce - Web Developer
-                        <small>Member since Nov. 2023</small>
+                    <p v-if="dataUser.loginData.value != null">
+                        {{ dataUser.loginData.value.name }}
+                        <small>{{ dataUser.loginData.value.email }}</small>
                     </p>
                     </li>
                     <!--end::User Image-->
-                    <!--begin::Menu Body-->
-                    <li class="user-body">
-                    <!--begin::Row-->
-                    <div class="row">
-                        <div class="col-4 text-center"><a href="#">Followers</a></div>
-                        <div class="col-4 text-center"><a href="#">Sales</a></div>
-                        <div class="col-4 text-center"><a href="#">Friends</a></div>
-                    </div>
-                    <!--end::Row-->
-                    </li>
-                    <!--end::Menu Body-->
                     <!--begin::Menu Footer-->
                     <li class="user-footer">
                     <a href="#" class="btn btn-default btn-flat">Profile</a>
-                    <a href="#" class="btn btn-default btn-flat float-end">Sign out</a>
+                    <a href="#" class="btn btn-default btn-flat float-end" @click="logout">Sign out</a>
                     </li>
                     <!--end::Menu Footer-->
                 </ul>

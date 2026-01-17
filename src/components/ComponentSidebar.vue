@@ -45,9 +45,9 @@ const pindahHalaman = (namaHalaman) => {
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" @click="pindahHalaman('chat')">
+                    <a href="#" class="nav-link" @click="pindahHalaman('booking')">
                     <i class="nav-icon bi bi-chat"></i>
-                    <p>Pesan</p>
+                    <p>Booking</p>
                     </a>
                 </li>
             </ul>

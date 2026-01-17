@@ -50,7 +50,7 @@ const prosesLogin = async (formValue) => {
             dataUser.userId = response.data.data.id
             dataUser.name = response.data.data.name
             dataUser.email = response.data.data.email
-            dataUser.apikey = response.data.access_token
+            dataUser.apikey = response.data.data.token
             dataUser.message = response.data.message
 
             // simpan user data ke local storage

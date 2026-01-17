@@ -16,8 +16,13 @@ export var routers = [
         component: () => import('../views/dashboard.vue')
     },
     {
-        path: '/chat',
-        name: 'chat',
-        component: () => import('../views/chat.vue')
+        path: '/booking',
+        name: 'booking',
+        component: () => import('../views/booking.vue')
+    },
+    {
+        path: '/booking/add',
+        name: 'booking.add',
+        component: () => import('../views/add_booking.vue')
     }
 ]

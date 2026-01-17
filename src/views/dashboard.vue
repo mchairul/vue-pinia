@@ -27,7 +27,7 @@ const getSaldo = async () => {
 onMounted(() => {
     document.body.classList.remove('login-page', 'bg-body-secondary')
     document.body.classList.add('layout-fixed', 'sidebar-expand-lg', 'sidebar-open', 'bg-body-tertiary')
-    getSaldo()
+    //getSaldo()
 })
 </script>
 

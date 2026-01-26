@@ -50,6 +50,12 @@ const pindahHalaman = (namaHalaman) => {
                     <p>Booking</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" @click="pindahHalaman('dokter')">
+                    <i class="nav-icon bi bi-chat"></i>
+                    <p>Dokter</p>
+                    </a>
+                </li>
             </ul>
             </nav>
         </div>

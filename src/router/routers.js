@@ -24,5 +24,15 @@ export var routers = [
         path: '/booking/add',
         name: 'booking.add',
         component: () => import('../views/add_booking.vue')
+    },
+    {
+        path: '/dokter',
+        name: 'dokter',
+        component: () => import('../views/doctors.vue')
+    },
+    {
+        path: '/dokter/tambah',
+        name: 'dokter.add',
+        component: () => import('../views/add_dokter.vue')
     }
 ]

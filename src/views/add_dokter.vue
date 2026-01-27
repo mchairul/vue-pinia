@@ -1,14 +1,12 @@
 <script setup>
 import { ref } from 'vue';
-import ComponentFooter from '../components/ComponentFooter.vue';
-import ComponentHeader from '../components/ComponentHeader.vue';
-import ComponentSidebar from '../components/ComponentSidebar.vue';
 import * as yup from 'yup'
 import { ErrorMessage, Field, Form } from 'vee-validate';
 import { VueDatePicker } from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import API from '../api';
 import { useUserDataStore } from '../stores/userData';
+import Swal from 'sweetalert2';
 
 const schema = yup.object().shape({
     str: yup.string().required('STR harus diisi'),
@@ -19,12 +17,13 @@ const schema = yup.object().shape({
     foto: yup.mixed().required('foto wajib diisi')
 })
 
+
 //const newdate = new Date()
 const date = ref('1990-01-01')
 
 const loginStore = useUserDataStore()
 
-const addDoctor = async (formValue) => {
+const addDoctor = async (formValue, {setErrors}) => {
     let formData = new FormData()
 
     Object.entries(formValue).forEach(([key, value]) => {
@@ -39,17 +38,24 @@ const addDoctor = async (formValue) => {
         headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer ' + loginStore.loginData.value.apikey,
-            'Content-Type': 'multipart/form-data'
+            'ContentType': 'multipart/form-data'
         }
     }).then((response) => {
-        alert('ok')
+        Swal.fire({
+            title: 'tambah dokter berhasil',
+            timer: 3000,
+            timerProgressBar: true,
+            didClose: () => {
+                window.location.reload()
+            }
+        })
     }).catch((e) => {
         if (e.response) {
             console.log(e.response.status);
             // handle validation
             if (e.response.status == 428) {
                 console.log(e.response.data);
-                setErrors('')
+                setErrors(e.response.data.data)
             }
         } else {
             console.log('error' + e);
@@ -63,7 +69,7 @@ const addDoctor = async (formValue) => {
         <h5 class="modal-title" id="exampleModalLabel">Tambah Dokter</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-    <Form :validation-schema="schema" @submit="addDoctor">
+    <Form :validation-schema="schema" @submit="addDoctor" v-slot="{ setErrors }">
         <div class="modal-body">
             <div class="mb-3">
                 <label>STR</label>

@@ -34,5 +34,10 @@ export var routers = [
         path: '/dokter/tambah',
         name: 'dokter.add',
         component: () => import('../views/add_dokter.vue')
+    },
+    {
+        path: '/dokter/edit/:id',
+        name: 'dokter.edit',
+        component: () => import('../views/edit_dokter.vue')
     }
 ]

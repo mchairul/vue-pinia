@@ -7,6 +7,7 @@ import { onMounted, ref } from 'vue';
 import { useUserDataStore } from '../stores/userData';
 import API from '../api';
 import Add_dokter from './add_dokter.vue';
+import Swal from 'sweetalert2';
 
 const router = useRouter()
 const loading = ref(true)
@@ -26,6 +27,42 @@ const getDoctors = async () => {
         console.log(e);
     }).finally(()=>{
         loading.value = false
+    })
+}
+
+const confirmDelete = (id) => {
+    Swal.fire({
+        title: "apakah anda yakin?",
+        text: "untuk menghapus dokter ini!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, hapus!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteDoctor(id)
+        }
+    });
+}
+
+const deleteDoctor = async (id) => {
+    API.delete('/doctor/delete/' + id, {
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + loginStore.loginData.value.apikey
+        }
+    }).then((response) => {
+        Swal.fire({
+            title: 'hapus dokter berhasil',
+            timer: 3000,
+            timerProgressBar: true,
+            didClose: () => {
+                window.location.reload()
+            }
+        })
+    }).catch((e) => {
+        console.log(e);
     })
 }
 
@@ -75,7 +112,8 @@ onMounted(() => {
                                     <img :src="doctor.foto" width="150">
                                 </td>
                                 <td>
-                                    
+                                    <router-link :to="{name: 'dokter.edit', params: {id: doctor.id}}" class="btn btn-warning btn-sm">Edit</router-link> &nbsp;
+                                    <button class="btn btn-danger btn-sm" @click="confirmDelete(doctor.id)">Hapus</button>
                                 </td>
                             </tr>
                         </tbody>
